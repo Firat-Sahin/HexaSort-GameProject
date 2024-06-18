@@ -1,0 +1,87 @@
+--------------------------------------------------------
+enum Screen : 
+
+Bu enum sayesinde hangi ekranı print etmemiz gerektiğini belirleyebiliyoruz. GameState structının içine bakarsan orada CurrentScreen adlı bir Screen enumu görecesin. Aslında o değeri değiştirerek biz ekranı değiştiriyoruz. main içinindeki while döngüsüne bakarsan o döngünün CurrentScreen değerine bağlı olduğunu görürsün. toplamda 9 farklı değer alabiliyor. alabileceği değerler ve ne anlama geldiklerini bakarak kolayca anlayabilirsin. LEVELS 1'den 26'ya kadar levellerin olduğu ekranı gösterirken GAMEPLAY asıl oyun ekranını temsil ediyor.
+--------------------------------------------------------
+struct floorBlock :
+
+oyun ekranındaki gri platform blokları ve alttakı üç adet renkli blok yığınının özelliklerini bu struct ile belirliyoruz. GameState fonksiyonunun içine bakarsanız orada Blocks ve ChosenBlock adlı floorBlock dizilerini görebilirsiniz mesela. Sırasıyla Blocks gri platform blokları iken ChosenBlock alttaki üç adet renkli blok yığınıdır. 
+
+floorBlock structında length değeri altıgenin en uzun köşegeninin uzunluğunu, loc değeri altıgenin ekran üzerindeki konumunu, color değeri altıgenin rengini temsil ediyor. Bunlar temel değerlerimiz. Bunlar dışında kullandığımız fonksiyonlara yardımcı olmak için 4 adet bool değikeni ve bir adet int dizisi var. 
+
+statue değişkeni faremizin altıgenin üzerinde olup olmadığını temsil ediyor. eğer üzerinde ise true, değilse false değerini alır. 
+
+floor değişkeni altıgenin bir gri platform bloğu mu yoksa renkli üç blok yığından birisi mi olduğunu belirliyor. eğer gri platform bloğuysa true, değilse false değerini alıyor. GameState fonksiyonunun içindeki Blocks dizisinin tüm elemanlarını floor değeri true dur mesela. Aynı şekilde GameState fonksiyonunun içindeki ChosenBlock dizisinin tüm elemanlarının floor değeri false tur. 
+
+hold değişkeni bizim renkli blok yığınları için kullanışlı olan bir değişken. eğer hold değişkeni true ise bu bizim o blok yığınına fare ile sol tıklayıp hareket ettirdiğimiz anlamına geliyor. Yani kısacası bu değişken bizim renkli blok yığınlarından birini tutup tutmadığımızı belirtiyor. 
+
+isclose değişkeni bloğun kapalı olup olmadığını belirtiyor. Yani eğer bu değer true ise altıgen ekrana print edilmiyor ve haliyle üzerine blok yerleştirilemiyor. genel olarak DeleteBlock() ve CloseBlock() fonksiyonları için oluşturulmuş bir değişkendir.
+
+Highers int dizisi platform üzerindeki blokları temsil ediyor. Örneğin  [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, ...] gibi bir dizi ile platform üzerinde toplam altı adet mavi blok ( 1 = mavi ) olduğunu temsil ediyoruz. Veya [1, 1, 1, 1, 1, 1, 3, 3, 3, 0, 0, ...] dizisi ile patform üzerinde 6 adet mavi ve 3 adet kırmızı olduğunu belirtiyoruz. dizinin alabileceği sayılar 0 ile 10 arasındadır (0 ve 10 dahil). 0 boş bloğu yani orada bloğun olmadığını temsil ederken 1-10 arası sayılar bir rengi temsil ediyor. Sırasıyla 1-BLUE, 2-YELLOW, 3-RED, 4-GREEN, 5-VIOLET, 6-ORANGE, 7-PINK, 8-SKYBLUE, 9-MAGENTA, 10-DARKGRAY. Bunlar sayıların temsil ettiği renkler ama eğer fare platform üzerinde ise bunların temsilleri de değişiyor. mesela fare platform üzerinde ise 3 değeri RED değerini değil bizim kendimizin tanımladğını RED_2 rengini temsil ediyor. aynı şey diğerleri için de geçerli eğer fare platform üzerinde ise 1 değeri DARKBLUE değil DARKBLUE_2 değerini belirtiyor mesela. Bu dizinin sonu hep belli sayıda 0 ile bitiyor. En baştan diziyi okurkan belli bir yerde 0 ile karşılaşıyorsanız bilin ki ondan sonraki sayıların hepsi 0.
+
+--------------------------------------------------------
+struct SavedData :
+
+SavedData structı ile program kapandığında hangi verileri bilgisayarın bir yerine kaydetmek istedimizi saklayabiliyoruz. Örneğin name adlı bir string değişkeni bizim kullanıcı adımızı temsil ediyor. Eğer oyun başladığında Tunahan ismini girmişsem oyunu kapayıp tekrar açtığımda tekrar Tunahan isminin girili olduğunu görürüm çünkü SavedData structını bir yere kaydettim.
+
+Dediğim gibi name değeri bizim kullanıcı adımızı saklayan bir string. 
+
+coin değeri sahip olduğumuz para miktarı, bu para ile shop tan özellikler alabiliyoruz.
+
+framecounter ve lettercount değişkenleri sadece InıtName() fonksiyonu için yaralı. InıtName() dışında bu değişkenlerin kullanıldığı bir yer yok. Bu fonksiyon adımızı girebilmemize yardımcı oluyor bunu yaparken de framecounter ve lettercount değişkenlerinden yardım alıyor. framecounter ın ne olduğu hakkında hiçbir fikrim yok çünkü ben yazmadım kodu Fırat yazdı. lettercount senin isminin kaç harfli olduğunu temsil ediyor.
+
+picture değişkeni hangi profil resmini kullandığını temsil ediyor. 1-6 arasında bir sayı alabiliyor. Aldığı sayıya göre de ekrana belli bir profil resmini basıyor.
+
+voice değeri bulunduğumuz duruma bağlı olarak 0 veya 1 değeri alıyor. 1 değeri bulunduğumuz ekrana göre belirli bir müzik çaldırmaya veya durdurmaya yararken, 0 değeri ile aynı müziği her döngüde tekrar tekrar çaldırmamak için kullanıyoruz. main içindeki while döngüsüne bakarsanız daha rahat anlaşılır ne dediğim.
+
+Stars int dizisi aldığımız yıldızların sayısını saklı tutar. Eğer ben ile levelden 2 yıldız almışsam Starts[0] ın değeri 2 dir veya örneğin 7 inde levelde 0 yıldızım varsa Stars[6] nın değeri 0 dır.
+
+FeatureCount int dizisi kaç özelliğe sahip olduğumuzun verisini saklar. FeatureCount[0] değeri hamle sayısını azaltan özelliğin sayısını, FeatureCount[2] değeri renkli blok dizilerini değiştiren özelliğin sayısını, FeatureCount[3] değeri blokları yok eden yıldırım özelliğinin sayısını, FeatureCount[4] değeri zamanı azaltan özelliğin sayısını saklı tutar. FeatureCount[1] değeri bir özelliğin sayısını tutmaz. Bunun yerine sahip olduğumuz kalp miktarının sayısını saklı tutar.
+
+Locks bool dizisi, belirli bir leveli açıp açamadığımızın verisini saklar. en başta sadece birinci seviye açıktır. Bu yüzden Locks[0] değeri true iken diğer diğer değerler false dur. Oyunu oynamaya devam ettikçe bu seviyeler açılır ve eğer oyundan çıkıp tekrar girersek bu dizi sayesinde hangi levelleri açtığımızı belirleriz.
+
+IsSoundOff değişkeni en başta false dur. Eğer kullanıcı sesleri tamamen kaparsa true olur ve voice değerimiz ne olursa olsun müzik çalmayı bırakır ve IsSoundOff tekrardan true olana kadar da bir daha çalmaz.
+
+mouseOntext değişkeni InıtName() için lazım bir değişken. eğer fare adımızın yazılı olduğu kutucuğun üzerinde ise true döndürür. değilse false döndürür. Bunun gerekli olup olmadığını bilmiyorum ama yazmak zorunda kaldım çünkü Fırat'ın kodunu tam anlayamadım.
+
+textBox değişkeni Adımız yazılı olduğu kutucuktur. Profil Resminin altında bulunur.
+
+--------------------------------------------------------
+struct GameState :
+Bu oyun her açıldığında saklanmaması gereken geçici değişkenleri saklı tutar. SetGameState() fonksiyonu ile alması gereken sabit değerleri yazabiliriz. Bu sabit gerekenler oynanan levele göre değişiklik gösterir örneğin States adlı bir GameState struct ı tanımlamışsak SetGameState(&States, 4) diye yazarsak States'in içindeki değişkenlere level 4 için uyumlu değerler atanır. Ben herhangi bir leveli oynamıyorsak ve menü ekranında isek SetGameState(&States, 1) diyerek değişkenlere değerler vermeyi tercih ediyorum. Menü ekranında isek integer kısmına ne yazdığımız önemli değil zaten. Bazı fonksiyonlar sayesinde bir levele girdiğimizde SetGameState() fonksiyonu otomatik olarak çağrılıyor zaten.
+
+Struct içindeki height ve width değişkenleri ekran boyutunu belirliyor. Adlarından dolayı height in ekran uzunluğu ve width in genişlik olduğunu mu düşünüyorsunuz? Hayır öyle değil çünkü fonskiyonları yazarkan bunların tam tersini yazdım. height artık genişliği belirliyor.
+
+current_time değişkeni bir leveli oynamaya başladıktan sonra geçen süreyi temsil ediyor. oyunu oynamaya devam ettikçe bu sayaç artmaya devam ediyor. Ta ki level bitene kadar. level bittiğinde current_time ınız time_goal değişkeni ile karşılaştırılıyor. Eğer current_time daha küçük ise ve oyunu kazanmışsanız size oyun sonunda verilen yıldızların sayısı 1 artıyor.
+
+score değişkeni sizin level oynarken skorunuzun kaç olduğunu tutuyor. Eğer level başka bir sebepten dolayı bitmezse score değeri score_goal değerini geçtiğinde level bitiyor ve kazanıyorsunuz. Kazandığınızda yani score değeri score_goal değişkeninden büyük veya eşit ise size verilen yıldız sayısı 1 artıyor.
+
+moveCount yaptığınız hamle sayısını temsil ediyor. 0'dan başlıyor ve siz hamle yaptıkça birer birer artıyor. Oyunun sonunda moveCount değişkeniniz move_goal değişkeninden küçük veya eşit ise ve oyunu kazanmışsanız size verilen yıldız sayısı 1 artıyor.
+
+selected değişkeni hangi özelliği kullanmayı seçtiğinizi temsil ediyor. Eğer 0 ise demek ki hiçbir özellik kullanmayacaksınız. 1 ise demek ki hamle sayısını azaltan özelliği kullanacaksınız. Aynı şekilde 2 ise renkli blok yığınlarını değiştiren özelliği, 3 ise blokları yok eden yıldırım özelliğini, 4 ise zamanı azaltan özelliği kullanacaksınız demektir. Bu selected değişkeni belirli fonksiyonlar sayesinde değişiyor ve bu değişkenin değerine göre UseFeature() fonksiyonu çalışıp özellik kullanılıyor.
+
+size değişkeni Blocks dizisinin büyüklüğünü temsil ediyor. level ne olursa olsun sabit 33 değerini alır.
+
+level değişkeni hangi leveli oynadığımızı belirtiyor. 1. leveli oynuyorsak 1, 9. leveli oynuyorsak 9 değerini alır.
+
+SettingsHold, ProfilHold, BagHold bool değişkenleri bir nevi benzer şekilde çalışıyor. eğer ayarlar sekmesini açmışsak SettingsHold true oluyor, açmamışsak false oluyor. Profil resmine tıklayıp profili değiştirme sekmesini açmışsak ProfilHold true, açmamışsak false oluyor. Oyun ekranında iken ayarlar sekmesinin altındanki torba resmine basmışsak ve özelliklerin bulunduğu ekranı açmışsak BagHold true, açmamışsak false oluyor.
+
+exit değişkeni oyundan çıkmak isteyip istemediğimizi kontrol ediyor. Eğer Ayarlar sekmesi içindeki çarpı simgesine basarsak exit değeri true oluyor ve oyun kapanıyor.
+
+CurrentScreen değişkeninden yukarı bahsetmiştim. Kullanıcı hangi ekrandaysa bu değişken o değeri alıyor. Eğer bir leveli oynuyorsak GAMEPLAY, Shop ekranında ise SHOP değerini alıyor. Kullanıcı ekran değiştirmek istediğinde de haliyle CurrentScreen değişkeni değişiyor. Bunun yanında PerviousScreen değişken biraz garip çalışıyor. Bildiğin gibi bizim beş adet menü ekranımız var aslında - HADES, POSEDION, DEMETER, ZEUS, KRONOS ve BOSS. BOSS ekranı dışında diğer ekranların herhangi birinden SHOP ve LEVELS ekranlarına gidilebiliyor. Peki sizce SHOP ve LEVELS ekranından geriye döndüğümüzde hangi ekrana geri dönmeli. Mantıken tabii ki en son bulunduğumuz ekran ne ise oraya dönmeliyiz. Burada ise PerviousScreen değeri devreye giriyor. Biz SHOP ve LEVELS ekranlarına her gittiğimizde PerviousScreen değeri oralara gitmeden önce hangi ekranda bulunduğumuzun verisini tutuyor. Örneğin şu anda ZEUS taysak hem PerviousScreen hem de CurrentScreen değerleri ZEUS tur. Eğer oradan DEMETER e gidersek hem PerviousScreen hem de CurrentScreen DEMETER olur. Sonra oradan da LEVELS ekranına gidersek CurrentScreen değişkeninin değeri LEVELS olur ama PerviousScreen değeri DEMETER olarak kalır. Kullanıcı geriye dönmek istediğinde program PerviousScreen değişkenine bakar ve değeri herneyse onu CurrentScreen'e atar. Eğer kullanıcı LEVELS ten geri dönmek yerine bir oyunu açarsa CurrentScreen GAMEPLAY olur ve PerviousScreen yine değişmez. Oyun bittiğinde CurrentScreen değeri LEVELS olur PerviousScreen değeri yine değişmez ve DEMETER olarak kalır. Yazmak istediğimiz şeye göre bunları çeşitlendirmek mümkün.
+
+Bir seviyeyi açtığımızı ve oynadığımızı düşünelim yani CurrentScreen şu anda GamePlay ve karşımızda gri platform blokları ve onun altında da 3 adet renkli blok yığını var. O gri platform blokları Blocks dizisi içinde, renkli blok yığınları ise ChosenBlock dizisi içinde tutuluyor. Bu arada ChosenBlock dizisi içindeki elemanların color değerleri Highers dizisinin ilk elemanına göre değişiyor. Yani platform bloklarında olduğu gibi sabit bir değeri yok. ChosenBlock dizisi random olarak belirlenirken Blocks dizisi levele göre önceden tanımlanmış sabit bir değer alıyor. Blocks dizisinin büyüklüğü 33 ama çoğu zaman gri platform için yaklaşık 25-26 bloğa ihtiyaç oluyor. Bu durumlarda geriye kalanların loc değeri {0, 0} olarak atanıyor ve fonksiyonları yazarken bunun fonksiyona bir boş eleman olduğu belirtiliyor.
+
+Datas değeri bir SavedData struct ıdır. program başladığında otomatik olarak aldığımız save den yüklenir ve oyunu oynadıkça bu değişken değişir. Program kapandığında bu değişken bir dosyaya daha sonra kullanmak için kaydedilir.
+
+--------------------------------------------------------
+struct Condition :
+
+Bazı fonksiyonlarda dört tane bool değerine hep ihtiyaç vardı. Bunu her seferinde yazmak yerine bir struct a atadık. Alt taraflardaki IsMouseOn adlı ile başlayan fonksiyonlara bakarsan ne dediğimi daha iyi anlarsın. Eğer bu struct olmasaydı belki de 20-25 tane bool değişkeni define etmemiz gerekecekti.
+
+--------------------------------------------------------
+struct AllImages:
+
+toplam 166 tane resim kullanmamız gerekiyor ve bu resimleri de teker teker fonksiyonlara parametre olarak atamamız gerekiyordu. 8-9 parametreli bir fonksiyon yazmak yerine AllImages fonksiyonunu tanımladık. Sonra bunun içine 166 tane yani kullanacağımız resim sayısı kadar Texture2D değişkeni define ettik ve sonra AllImages türünde bir değişken oluşturduk. Ardından tüm resimleri teker teker bu struct değişkeninin içindeki elemanlara atadık. Artık bir fonskiyonda resimlere ihtiyaç olduğunda tek yapmamız gereken fonksiyona parametre olarak AllImages tipinde bir değişken yazmak. Ayrıca bu AllImages değişkeninin elemanları resim atamak için LoadAllImages isimli bir fonksiyon da tanımladık. Eğer o fonksiyona bakarsan ne demek istediğim daha iyi anlaşılır.
+
+--------------------------------------------------------
